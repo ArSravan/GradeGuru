@@ -90,7 +90,7 @@ def train_one(df: pd.DataFrame, features: list[str], mode: str, out_path: Path) 
 
     return ModelMeta(
         trained_at_utc=datetime.now(timezone.utc).isoformat(),
-        dataset=str(RAW_PATH),
+        dataset=RAW_PATH.relative_to(ROOT).as_posix(),
         target="G3",
         mode=mode,
         features=features,
