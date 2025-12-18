@@ -21,7 +21,7 @@ env/
 # ========================
 # Data & Models
 # ========================
-data/raw/
+!data/raw/
 data/processed/
 models/*
 !models/*.joblib
