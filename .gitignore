@@ -23,7 +23,9 @@ env/
 # ========================
 data/raw/
 data/processed/
-models/*.joblib
+models/*
+!models/*.joblib
+!models/metadata.json
 
 # ========================
 # Test & Coverage
