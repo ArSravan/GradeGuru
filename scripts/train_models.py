@@ -107,12 +107,18 @@ def main() -> None:
         )
 
     df = pd.read_csv(RAW_PATH, sep=";")
+    EARLY_FEATURES = [
+    "sex", "age", "address",
+    "Medu", "Fedu",
+    "studytime", "failures", "absences",
+    "schoolsup", "famsup",
+    "higher", "internet",
+    "Dalc", "Walc", "health"
+    ]
+    FULL_FEATURES = EARLY_FEATURES + ["G1", "G2"]
 
-    full_features = [c for c in df.columns if c != "G3"]
-    early_features = [c for c in df.columns if c not in {"G3", "G1", "G2"}]
-
-    meta_full = train_one(df, full_features, "full", FULL_MODEL_PATH)
-    meta_early = train_one(df, early_features, "early", EARLY_MODEL_PATH)
+    meta_full = train_one(df, FULL_FEATURES, "full", FULL_MODEL_PATH)
+    meta_early = train_one(df, EARLY_FEATURES, "early", EARLY_MODEL_PATH)
 
     payload = {"full": asdict(meta_full), "early": asdict(meta_early)}
     METADATA_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
