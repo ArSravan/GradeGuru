@@ -6,7 +6,7 @@ Flask · Machine Learning · Docker
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 *GradeGuru* is a web-based machine learning application that predicts a student’s *final academic grade (G3)* and classifies their *academic risk level* (*High / Medium / Low*) using demographic, behavioral, and academic features.
 
@@ -16,7 +16,7 @@ This project was developed as part of the *Python module (Semester 1)* in the *M
 
 ---
 
-## 👥 Team & Collaboration
+## Team & Collaboration
 
 *Team Members*
 - *Sravan*  
@@ -35,7 +35,7 @@ Collaboration was handled via *GitHub*, with both members contributing commits, 
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 - *UCI Student Performance Dataset*
 - Contains student demographic, social, and academic features
@@ -45,9 +45,9 @@ The dataset is used to train *regression models* that estimate a student’s fin
 
 ---
 
-## ⚙️ Application Features
+## Application Features
 
-### ✅ Web Application (Frontend)
+### Web Application (Frontend)
 - *Home Page (/)*  
   Introduction and navigation entry point
 
@@ -64,7 +64,7 @@ The dataset is used to train *regression models* that estimate a student’s fin
 
 ---
 
-### ✅ REST API (Backend)
+### REST API (Backend)
 - GET /api/health  
   Health check endpoint
 
@@ -80,7 +80,7 @@ The dataset is used to train *regression models* that estimate a student’s fin
 
 ---
 
-### 🎯 Risk Band Logic
+### Risk Band Logic
 | Predicted G3 | Risk Level |
 |-------------|-----------|
 | < 10      | High      |
@@ -89,7 +89,7 @@ The dataset is used to train *regression models* that estimate a student’s fin
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```text
 GradeGuru/
@@ -112,7 +112,7 @@ GradeGuru/
 
 ---
 ```
-## 🧰 Requirements
+## Requirements
 
 Before running the project, make sure you have:
 
