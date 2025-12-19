@@ -18,33 +18,33 @@
       --radius: 18px;
     }
 
-    *{box-sizing:border-box}
+    *{
+      box-sizing: border-box;
+      margin: 0;
+    }
+
     body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       color: var(--text);
-      min-height: 100vh;
-      background:
-        radial-gradient(1200px 700px at 10% 10%, rgba(255,255,255,.22), transparent 55%),
-        radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.18), transparent 60%),
+      background: 
+        radial-gradient(1200px 700px at 10% 10%, rgba(255,255,255,.22), transparent 55%), 
+        radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.18), transparent 60%), 
         linear-gradient(135deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 28px 16px;
+      display: flex;
+      align-items: center; /* Vertically center */
+      justify-content: center; /* Horizontally center */
+      min-height: 100vh;
+      padding: 0 16px;
+      overflow-x: hidden;
     }
 
     .wrap{
-      width: min(980px, 100%);
-      display:grid;
-      grid-template-columns: 1.25fr .85fr;
-      gap: 16px;
-      align-items: stretch;
-    }
-
-    @media (max-width: 900px){
-      .wrap{ grid-template-columns: 1fr; }
+      width: 100%;
+      max-width: 980px;  /* max width for large screens */
+      display: flex;
+      justify-content: center; /* Centering inside flex */
+      align-items: center;
+      padding: 16px;
     }
 
     .card{
@@ -53,7 +53,10 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
-      overflow:hidden;
+      overflow: hidden;
+      padding: 20px;
+      width: 100%; /* full width of wrap */
+      max-width: 500px; /* max width for the card */
     }
 
     .cardHeader{
@@ -63,9 +66,9 @@
     }
 
     .cardHeader h1{
-      margin:0;
+      margin: 0;
       font-size: clamp(26px, 3vw, 38px);
-      letter-spacing:.2px;
+      letter-spacing: .2px;
     }
 
     .cardHeader p{
@@ -81,16 +84,17 @@
     }
 
     .badgeRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin: 8px 0 18px;
+      justify-content: center; /* Center badges */
     }
 
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid var(--line);
@@ -100,39 +104,47 @@
       letter-spacing:.2px;
       font-size: 12px;
     }
+
     .dot{
-      width:10px;
-      height:10px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: rgba(255,255,255,.85);
       box-shadow: 0 0 0 4px rgba(255,255,255,.10);
     }
 
     .ctaRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
       margin-top: 14px;
+      justify-content: center; /* Center the CTA buttons */
     }
 
     .btn{
-      border:0;
-      cursor:pointer;
+      border: 0;
+      cursor: pointer;
       border-radius: 14px;
       padding: 12px 14px;
       font-weight: 800;
-      letter-spacing:.2px;
+      letter-spacing: .2px;
       color: #0b1020;
       background: rgba(255,255,255,.92);
       transition: transform .06s ease, filter .2s ease;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
-    .btn:hover{ filter: brightness(1.05); }
-    .btn:active{ transform: translateY(1px); }
+
+    .btn:hover{ 
+      filter: brightness(1.05); 
+    }
+
+    .btn:active{ 
+      transform: translateY(1px); 
+    }
 
     .btnGhost{
       background: rgba(0,0,0,.18);
@@ -148,45 +160,11 @@
       margin-top: 12px;
     }
 
-    /* Right card */
-    .side{
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-      height:100%;
-    }
-
-    .metric{
-      padding: 16px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: var(--card2);
-      display:flex;
-      justify-content: space-between;
-      align-items:center;
-      gap: 10px;
-    }
-    .metric strong{ font-size: 18px; }
-    .metric span{ color: var(--muted); font-size: 12px; }
-
-    .log{
-      flex:1;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: 12px;
-      color: rgba(255,255,255,.80);
-      background: rgba(0,0,0,.20);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      overflow:auto;
-      white-space: pre-wrap;
-      min-height: 140px;
-    }
-
     a.link{
       color: rgba(255,255,255,.92);
       text-decoration: underline;
     }
+
   </style>
 </head>
 
@@ -197,7 +175,7 @@
     <section class="card">
       <div class="cardHeader">
         <h1>GradeGuru</h1>
-        <p>
+        <p
           A Flask + Machine Learning web app that predicts a student’s final grade (G3) and assigns a risk band.
           Use <b>Early</b> mode for early-warning, or <b>Full</b> mode when you also know <b>G1</b> and <b>G2</b>.
         </p>
@@ -231,40 +209,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Side panel -->
-    <aside class="card">
-      <div class="cardHeader">
-        <h2 style="margin:0;font-size:18px;">Quick Info</h2>
-        <p style="margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.35;">
-          Useful endpoints for testing and demos.
-        </p>
-      </div>
-
-      <div class="cardBody side">
-        <div class="metric">
-          <div>
-            <strong>/api/predict</strong><br>
-            <span>POST only (JSON)</span>
-          </div>
-          <span class="badge"><span class="dot"></span> ML</span>
-        </div>
-
-        <div class="metric">
-          <div>
-            <strong>/api/schema</strong><br>
-            <span>Required fields</span>
-          </div>
-          <span class="badge"><span class="dot"></span> Docs</span>
-        </div>
-
-        <div class="log" id="statusLog">Checking API health…</div>
-
-        <div class="mini">
-          Built by: <b>Sravan</b> & <b>Rizwan</b> (update names in README).
-        </div>
-      </div>
-    </aside>
 
   </main>
 
