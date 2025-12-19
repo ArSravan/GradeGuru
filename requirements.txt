@@ -1,12 +1,13 @@
 # Web Framework
 Flask==3.0.0
 gunicorn==21.2.0
+requests==2.32.3
 
 # Machine Learning & Data Processing
 numpy==1.26.2
 pandas==2.1.4
 scikit-learn==1.6.1
-joblib==1.3.2
+joblib==1.4.2
 
 # Validation (clean API contracts)
 pydantic==2.5.2
