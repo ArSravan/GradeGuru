@@ -84,50 +84,50 @@ def schema():
         "full": FULL_FEATURES
     })
 
-@api.post("/predict")
-def predict():
+def predict_payload(payload: dict[str, Any]) -> dict[str, Any]:
     """
-    Predict student academic performance using a trained ML model.
+    Core prediction logic used by both the API route and the HTML result route.
 
-    This endpoint accepts JSON input where keys correspond to the model's
-    expected feature names. An optional "mode" selects the prediction model:
-      
-    "early": does NOT require G1/G2 (default)
-    "full": requires G1 and G2
+    Args:
+        payload: Input features dictionary. May include optional "mode".
 
     Returns:
-        flask.Response: JSON response containing predicted final grade (G3)
-        and the associated academic risk band.
+        A JSON-serializable dict. On success it contains:
+        {status, mode, predicted_g3, risk_band}
+        On error it contains:
+        {error: {message, ...}, mode}
     """
-    data: dict[str, Any] = request.get_json(silent=True) or {}
+    data = dict(payload)  # copy so we can safely pop/modify
 
     mode = data.pop("mode", "early")
     if mode not in ("full", "early"):
-        return jsonify({"error": {"message": "mode must be 'full' or 'early'"}}), 400
+        return {"error": {"message": "mode must be 'full' or 'early'"}, "mode": mode}
 
     model = full_model if mode == "full" else early_model
     expected_features = FULL_FEATURES if mode == "full" else EARLY_FEATURES
 
-    try:
-        missing_features = [f for f in expected_features if f not in data]
-        if missing_features:
-            return jsonify({
-                "error": {
-                    "message": "Missing required features",
-                    "missing": missing_features,
-                    "mode": mode
-                }
-            }), 400
-
-        X = pd.DataFrame([{f: data[f] for f in expected_features}])
-        pred = float(model.predict(X)[0])
-
-        return jsonify({
-            "status": "success",
+    missing_features = [f for f in expected_features if f not in data]
+    if missing_features:
+        return {
+            "error": {"message": "Missing required features", "missing": missing_features},
             "mode": mode,
-            "predicted_g3": round(pred, 2),
-            "risk_band": risk_band(pred),
-        })
+        }
 
-    except Exception as e:
-        return jsonify({"error": {"message": str(e)}}), 400
+    X = pd.DataFrame([{f: data[f] for f in expected_features}])
+    pred = float(model.predict(X)[0])
+
+    return {
+        "status": "success",
+        "mode": mode,
+        "predicted_g3": round(pred, 2),
+        "risk_band": risk_band(pred),
+    }
+
+@api.post("/predict")
+def predict():
+    payload: dict[str, Any] = request.get_json(silent=True) or {}
+    result = predict_payload(payload)
+
+    if "error" in result:
+        return jsonify(result), 400
+    return jsonify(result)
