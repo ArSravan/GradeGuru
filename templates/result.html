@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GradeGuru – Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    }
+
+    .card{
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      padding: 28px;
+      width: min(420px, 90%);
+      box-shadow: 0 24px 60px rgba(0,0,0,.25);
+      color: white;
+      text-align: center;
+    }
+
+    h1{
+      margin-top:0;
+      font-size: 26px;
+    }
+
+    .value{
+      font-size: 44px;
+      font-weight: 800;
+      margin: 10px 0;
+    }
+
+    .risk{
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .high{ color:#ffb4b4; }
+    .medium{ color:#ffe6a3; }
+    .low{ color:#b6ffda; }
+
+    a{
+      display:inline-block;
+      margin-top: 12px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,.9);
+      color:#111;
+      border-radius: 12px;
+      text-decoration:none;
+      font-weight:700;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Prediction Result</h1>
+
+    <div class="value">{{ predicted_g3 }}</div>
+
+    <div class="risk {{ risk_band|lower }}">
+      Risk Level: <strong>{{ risk_band }}</strong>
+    </div>
+
+    <a href="/dashboard">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

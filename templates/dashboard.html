@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GradeGuru — Dashboard</title>
+
+  <style>
+    :root{
+      --bg1:#0ea5e9;
+      --bg2:#8b5cf6;
+      --card: rgba(255,255,255,.10);
+      --card2: rgba(255,255,255,.16);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --line: rgba(255,255,255,.18);
+      --shadow: 0 24px 60px rgba(0,0,0,.28);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(1200px 700px at 10% 10%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 42px 18px 60px;
+    }
+
+    header{
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .title h1{
+      margin:0;
+      font-size: clamp(24px, 2.6vw, 36px);
+      letter-spacing: .2px;
+    }
+    .title p{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.35;
+      max-width: 720px;
+    }
+
+    .pill{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(0,0,0,.12);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 18px rgba(0,0,0,.14);
+      user-select:none;
+    }
+    .pill small{ color: var(--muted); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.4fr .9fr;
+      gap: 16px;
+      align-items:start;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 920px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
+    }
+    .cardHeader{
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(to right, rgba(255,255,255,.10), rgba(255,255,255,.04));
+    }
+    .cardHeader h2{
+      margin:0;
+      font-size: 18px;
+    }
+    .cardHeader p{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .cardBody{ padding: 18px; }
+
+    .modeRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .toggle{
+      display:flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow:hidden;
+      background: rgba(0,0,0,.12);
+    }
+    .toggle button{
+      appearance:none;
+      border:0;
+      padding: 10px 14px;
+      background: transparent;
+      color: var(--muted);
+      cursor:pointer;
+      font-weight: 600;
+      letter-spacing:.2px;
+    }
+    .toggle button.active{
+      background: rgba(255,255,255,.18);
+      color: var(--text);
+    }
+
+    form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 680px){
+      form{ grid-template-columns: 1fr; }
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .field label{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .field input, .field select{
+      width:100%;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.16);
+      color: var(--text);
+      outline:none;
+    }
+    .field input:focus, .field select:focus{
+      border-color: rgba(255,255,255,.40);
+      background: rgba(0,0,0,.20);
+    }
+
+    .span2{ grid-column: 1 / -1; }
+
+    .actions{
+      grid-column: 1 / -1;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 700;
+      letter-spacing:.2px;
+      color: #0b1020;
+      background: rgba(255,255,255,.92);
+      transition: transform .06s ease, filter .2s ease;
+    }
+    .btn:hover{ filter: brightness(1.05); }
+    .btn:active{ transform: translateY(1px); }
+
+    .btnGhost{
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      max-width: 520px;
+    }
+
+    /* Results panel */
+    .resultBox{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .metric{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--card2);
+    }
+
+    .metric strong{ font-size: 22px; }
+    .metric .sub{ color: var(--muted); font-size: 12px; }
+
+    .log{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: rgba(255,255,255,.80);
+      background: rgba(0,0,0,.20);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      overflow:auto;
+      max-height: 260px;
+      white-space: pre-wrap;
+    }
+
+    .footerLink{
+      margin-top: 10px;
+      color: rgba(255,255,255,.75);
+      font-size: 12px;
+    }
+    .footerLink a{
+      color: rgba(255,255,255,.92);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>GradeGuru — Student Risk Predictor</h1>
+        <p>
+          Enter student attributes from the UCI Student Performance dataset. The app predicts <b>final grade (G3)</b> and assigns a
+          <b>risk band</b>. Use <b>Early</b> for early-warning; use <b>Full</b> when you also know <b>G1</b> and <b>G2</b>.
+        </p>
+      </div>
+      <div class="pill">
+        <small>Flow:</small>
+        <span>/dashboard → /result</span>
+      </div>
+    </header>
+
+    <div class="grid">
+
+      <!-- LEFT: Form -->
+      <section class="card">
+        <div class="cardHeader">
+          <h2>Input Form</h2>
+          <p>Pick a mode, fill the fields, then click Predict. (This submits to <b>/result</b> and shows the prediction on a new page.)</p>
+        </div>
+
+        <div class="cardBody">
+          <div class="modeRow">
+            <div class="toggle" role="tablist" aria-label="Mode">
+              <button type="button" id="btnEarly" class="active">Early</button>
+              <button type="button" id="btnFull">Full</button>
+            </div>
+
+            <div class="hint">
+              Tip: Use dataset formats: Sex (M/F), Address (U/R), and yes/no fields.
+            </div>
+          </div>
+
+          <!-- ✅ FIX: the form must wrap ALL inputs -->
+          <form id="predictForm" method="POST" action="/result">
+            <!-- ✅ hidden mode that gets set by JS -->
+            <input type="hidden" id="mode" name="mode" value="early" />
+
+            <!-- categorical -->
+            <div class="field">
+              <label for="sex">Sex</label>
+              <select id="sex" name="sex">
+                <option value="M">M</option>
+                <option value="F">F</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="address">Address</label>
+              <select id="address" name="address">
+                <option value="U">U (Urban)</option>
+                <option value="R">R (Rural)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="schoolsup">School support</label>
+              <select id="schoolsup" name="schoolsup">
+                <option value="no">no</option>
+                <option value="yes">yes</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="famsup">Family support</label>
+              <select id="famsup" name="famsup">
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="higher">Wants higher education</label>
+              <select id="higher" name="higher">
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="internet">Internet</label>
+              <select id="internet" name="internet">
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+              </select>
+            </div>
+
+            <!-- numeric -->
+            <div class="field">
+              <label for="age">Age</label>
+              <input id="age" name="age" type="number" min="10" max="25" value="16" />
+            </div>
+
+            <div class="field">
+              <label for="absences">Absences</label>
+              <input id="absences" name="absences" type="number" min="0" max="100" value="4" />
+            </div>
+
+            <div class="field">
+              <label for="Medu">Mother education (Medu)</label>
+              <input id="Medu" name="Medu" type="number" min="0" max="4" value="3" />
+            </div>
+
+            <div class="field">
+              <label for="Fedu">Father education (Fedu)</label>
+              <input id="Fedu" name="Fedu" type="number" min="0" max="4" value="2" />
+            </div>
+
+            <div class="field">
+              <label for="traveltime">Travel time</label>
+              <input id="traveltime" name="traveltime" type="number" min="1" max="4" value="1" />
+            </div>
+
+            <div class="field">
+              <label for="studytime">Study time</label>
+              <input id="studytime" name="studytime" type="number" min="1" max="4" value="2" />
+            </div>
+
+            <div class="field">
+              <label for="failures">Failures</label>
+              <input id="failures" name="failures" type="number" min="0" max="4" value="0" />
+            </div>
+
+            <div class="field">
+              <label for="health">Health</label>
+              <input id="health" name="health" type="number" min="1" max="5" value="4" />
+            </div>
+
+            <div class="field">
+              <label for="famrel">Family relationship (famrel)</label>
+              <input id="famrel" name="famrel" type="number" min="1" max="5" value="4" />
+            </div>
+
+            <div class="field">
+              <label for="freetime">Free time</label>
+              <input id="freetime" name="freetime" type="number" min="1" max="5" value="3" />
+            </div>
+
+            <div class="field">
+              <label for="goout">Go out</label>
+              <input id="goout" name="goout" type="number" min="1" max="5" value="2" />
+            </div>
+
+            <div class="field">
+              <label for="Dalc">Workday alcohol (Dalc)</label>
+              <input id="Dalc" name="Dalc" type="number" min="1" max="5" value="1" />
+            </div>
+
+            <div class="field">
+              <label for="Walc">Weekend alcohol (Walc)</label>
+              <input id="Walc" name="Walc" type="number" min="1" max="5" value="2" />
+            </div>
+
+            <!-- Full-only -->
+            <div class="field fullOnly" style="display:none;">
+              <label for="G1">G1 (1st period grade)</label>
+              <input id="G1" name="G1" type="number" min="0" max="20" value="12" />
+            </div>
+
+            <div class="field fullOnly" style="display:none;">
+              <label for="G2">G2 (2nd period grade)</label>
+              <input id="G2" name="G2" type="number" min="0" max="20" value="13" />
+            </div>
+
+            <div class="actions">
+              <!-- ✅ submits to /result -->
+              <button class="btn" type="submit" id="btnPredict">Predict</button>
+              <button class="btn btnGhost" type="button" id="btnReset">Reset</button>
+            </div>
+
+            <div class="hint span2">
+              If you get “Missing required features”, check <code>/api/schema</code>.
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- RIGHT: Info (since results are on /result now) -->
+      <aside class="card">
+        <div class="cardHeader">
+          <h2>How it works</h2>
+          <p>What happens after you click Predict.</p>
+        </div>
+
+        <div class="cardBody resultBox">
+          <div class="metric">
+            <div>
+              <div class="sub">Step 1</div>
+              <strong>Submit Form</strong>
+            </div>
+            <div class="sub">POST → /result</div>
+          </div>
+
+          <div class="metric">
+            <div>
+              <div class="sub">Step 2</div>
+              <strong>Server calls API</strong>
+            </div>
+            <div class="sub">POST → /api/predict</div>
+          </div>
+
+          <div class="metric">
+            <div>
+              <div class="sub">Step 3</div>
+              <strong>Show Result Page</strong>
+            </div>
+            <div class="sub">Render → result.html</div>
+          </div>
+
+          <div class="log" id="log">Choose a mode, fill values, and click Predict.</div>
+
+          <div class="footerLink">
+            Quick check: <a href="/api/health" target="_blank" rel="noreferrer">/api/health</a> ·
+            Schema: <a href="/api/schema" target="_blank" rel="noreferrer">/api/schema</a>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <script>
+    // ✅ Keep interactivity: mode toggle + show/hide G1/G2 + hidden input "mode"
+    let mode = "early";
+
+    const btnEarly = document.getElementById("btnEarly");
+    const btnFull  = document.getElementById("btnFull");
+    const form     = document.getElementById("predictForm");
+    const resetBtn = document.getElementById("btnReset");
+    const modeInput = document.getElementById("mode");
+
+    const logEl     = document.getElementById("log");
+    const fullOnly  = Array.from(document.querySelectorAll(".fullOnly"));
+
+    function setMode(next){
+      mode = next;
+      modeInput.value = mode;
+
+      btnEarly.classList.toggle("active", mode === "early");
+      btnFull.classList.toggle("active", mode === "full");
+
+      fullOnly.forEach(el => el.style.display = (mode === "full") ? "flex" : "none");
+
+      logEl.textContent = `Mode set to "${mode}". When you click Predict, you will be redirected to /result.`;
+    }
+
+    btnEarly.addEventListener("click", () => setMode("early"));
+    btnFull.addEventListener("click",  () => setMode("full"));
+
+    resetBtn.addEventListener("click", () => {
+      form.reset();
+      setMode("early");
+    });
+
+    // init
+    setMode("early");
+  </script>
+</body>
+</html>

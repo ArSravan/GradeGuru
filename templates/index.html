@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GradeGuru — Home</title>
+
+  <style>
+    :root{
+      --bg1:#0ea5e9;
+      --bg2:#8b5cf6;
+      --card: rgba(255,255,255,.10);
+      --card2: rgba(255,255,255,.16);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --line: rgba(255,255,255,.18);
+      --shadow: 0 24px 60px rgba(0,0,0,.28);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(1200px 700px at 10% 10%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 28px 16px;
+    }
+
+    .wrap{
+      width: min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.25fr .85fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 900px){
+      .wrap{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
+    }
+
+    .cardHeader{
+      padding: 20px 20px 14px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(to right, rgba(255,255,255,.10), rgba(255,255,255,.04));
+    }
+
+    .cardHeader h1{
+      margin:0;
+      font-size: clamp(26px, 3vw, 38px);
+      letter-spacing:.2px;
+    }
+
+    .cardHeader p{
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.4;
+      max-width: 60ch;
+      font-size: 13.5px;
+    }
+
+    .cardBody{
+      padding: 20px;
+    }
+
+    .badgeRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin: 8px 0 18px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.12);
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing:.2px;
+      font-size: 12px;
+    }
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.85);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.10);
+    }
+
+    .ctaRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 14px;
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 800;
+      letter-spacing:.2px;
+      color: #0b1020;
+      background: rgba(255,255,255,.92);
+      transition: transform .06s ease, filter .2s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:hover{ filter: brightness(1.05); }
+    .btn:active{ transform: translateY(1px); }
+
+    .btnGhost{
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      border: 1px solid var(--line);
+      font-weight: 800;
+    }
+
+    .mini{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 12px;
+    }
+
+    /* Right card */
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      height:100%;
+    }
+
+    .metric{
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--card2);
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 10px;
+    }
+    .metric strong{ font-size: 18px; }
+    .metric span{ color: var(--muted); font-size: 12px; }
+
+    .log{
+      flex:1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: rgba(255,255,255,.80);
+      background: rgba(0,0,0,.20);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      overflow:auto;
+      white-space: pre-wrap;
+      min-height: 140px;
+    }
+
+    a.link{
+      color: rgba(255,255,255,.92);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <!-- Main intro -->
+    <section class="card">
+      <div class="cardHeader">
+        <h1>GradeGuru</h1>
+        <p>
+          A Flask + Machine Learning web app that predicts a student’s final grade (G3) and assigns a risk band.
+          Use <b>Early</b> mode for early-warning, or <b>Full</b> mode when you also know <b>G1</b> and <b>G2</b>.
+        </p>
+      </div>
+
+      <div class="cardBody">
+        <div class="badgeRow">
+          <span class="badge"><span class="dot"></span> Flask API</span>
+          <span class="badge"><span class="dot"></span> UCI Student Performance</span>
+          <span class="badge"><span class="dot"></span> Early vs Full Model</span>
+        </div>
+
+        <div class="ctaRow">
+          <a class="btn" href="/dashboard" aria-label="Go to Dashboard">
+            ▶ Start Prediction
+          </a>
+
+          <a class="btn btnGhost" href="/api/schema" target="_blank" rel="noreferrer">
+            View API Schema
+          </a>
+
+          <a class="btn btnGhost" href="/api/health" target="_blank" rel="noreferrer">
+            Health Check
+          </a>
+        </div>
+
+        <div class="mini">
+          Tip: If the dashboard says “Missing required features”, open
+          <a class="link" href="/api/schema" target="_blank" rel="noreferrer">/api/schema</a>
+          to see exactly what the model expects.
+        </div>
+      </div>
+    </section>
+
+    <!-- Side panel -->
+    <aside class="card">
+      <div class="cardHeader">
+        <h2 style="margin:0;font-size:18px;">Quick Info</h2>
+        <p style="margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.35;">
+          Useful endpoints for testing and demos.
+        </p>
+      </div>
+
+      <div class="cardBody side">
+        <div class="metric">
+          <div>
+            <strong>/api/predict</strong><br>
+            <span>POST only (JSON)</span>
+          </div>
+          <span class="badge"><span class="dot"></span> ML</span>
+        </div>
+
+        <div class="metric">
+          <div>
+            <strong>/api/schema</strong><br>
+            <span>Required fields</span>
+          </div>
+          <span class="badge"><span class="dot"></span> Docs</span>
+        </div>
+
+        <div class="log" id="statusLog">Checking API health…</div>
+
+        <div class="mini">
+          Built by: <b>Sravan</b> & <b>Rizwan</b> (update names in README).
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script>
+    // Small interactive touch: auto-check health and show status.
+    const log = document.getElementById("statusLog");
+
+    async function checkHealth(){
+      try{
+        const res = await fetch("/api/health");
+        const json = await res.json();
+        log.textContent = "API Health:\n" + JSON.stringify(json, null, 2) + "\n\nNext:\nOpen /dashboard to run predictions.";
+      }catch(e){
+        log.textContent = "API Health: FAILED\n\nMake sure Flask is running.\nError:\n" + String(e);
+      }
+    }
+    checkHealth();
+  </script>
+</body>
+</html>
